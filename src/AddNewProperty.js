@@ -1,0 +1,301 @@
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  // AsyncStorage
+} from "react-native";
+import {
+  Container,
+  AppBar,
+  CssBaseline,
+  Typography,
+  createMuiTheme,
+  TextField,
+  withStyles,
+  Radio,
+  RadioGroup,
+  FormLabel,
+  FormControlLabel,
+  FormControl
+} from '@material-ui/core';
+
+import { TextInput, HelperText, useTheme } from "react-native-paper";
+import RadioButton from "./components/RadioButtons";
+import { ButtonGroup } from "react-native-elements";
+import Button from "./components/Button";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Snackbar from "./components/SnackbarComponent";
+import { useHistory } from 'react-router-dom';
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails } from "./reducers/Action";
+import { navigate } from "hookrouter";
+
+const options = [
+  {
+    key: "Residential",
+    text: "Residential"
+  },
+  {
+    key: "Commercial",
+    text: "Commercial"
+  }
+];
+
+const propertyForArray = ["Rent", "Sell"];
+
+const AddNewProperty = props => {
+  const { navigation } = props;
+  const history = useHistory();
+  const [propertyForIndex, setPropertyForIndex] = useState(-1);
+  const [selectedPropType, setSelectedPropType] = useState(null);
+  const [ownerName, setOwnerName] = useState("");
+  const [ownerMobile, setOwnerMobile] = useState("");
+  const [ownerAddress, setOwnerAddress] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+
+  const onSelectPropType = item => {
+    // console.log(item);
+    if (selectedPropType && selectedPropType.key === item.key) {
+      setSelectedPropType(null);
+    } else {
+      setSelectedPropType(item);
+      props.setPropertyType(item.key);
+    }
+    setIsVisible(false);
+  };
+
+  const selectPropertyForIndex = index => {
+    // // console.log(index);
+    // // console.log(propertyForArray[index]);
+    setPropertyForIndex(index);
+    setIsVisible(false);
+  };
+
+  const dismissSnackBar = () => {
+    setIsVisible(false);
+  };
+
+  const onSubmit = () => {
+    // console.log("-1");
+    if (selectedPropType === null) {
+      setErrorMessage("Select Property type missing");
+      setIsVisible(true);
+      return;
+    } else if (propertyForIndex === -1) {
+      setErrorMessage("Select Property for missing");
+      setIsVisible(true);
+      return;
+    } else if (ownerName.trim() === "") {
+      setErrorMessage("Owner name is missing");
+      setIsVisible(true);
+      return;
+    } else if (ownerMobile.trim() === "") {
+      setErrorMessage("Owner mobile is missing");
+      setIsVisible(true);
+      return;
+    }
+    // console.log("props.userDetails: " + JSON.stringify(props.userDetails));
+    const property = {
+      agent_id: "",//props.userDetails.works_for[0],
+      property_type: selectedPropType.key,
+      property_for: propertyForArray[propertyForIndex],
+      property_status: "open",
+      owner_details: {
+        name: ownerName.trim(),
+        mobile1: ownerMobile.trim(),
+        mobile2: ownerMobile.trim(),
+        address: ownerAddress.trim()
+      }
+    };
+    // console.log(property);
+    // AsyncStorage.setItem("property", JSON.stringify(property));
+    // // console.log("1");
+    props.setPropertyDetails(property);
+    // navigation.navigate("LocalityDetailsForm");
+    // history.push("/location");
+    navigate("/location");
+
+  };
+
+  return (
+
+    <Container maxWidth="xs" style={{ backgroundColor: "#F5F5F5" }}>
+      <SafeAreaView>
+        <Text style={{ fontWeight: 600, textAlign: "center", marginTop: 10, fontSize: 18 }}>Add New Property</Text>
+        <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
+          <ScrollView>
+            <View style={styles.header}>
+              <Text>Select Property Type</Text>
+            </View>
+            <View style={styles.propSection}>
+              <RadioButton
+                selectedOption={selectedPropType}
+                onSelect={onSelectPropType}
+                options={options}
+              />
+            </View>
+            <View style={styles.header}>
+              <Text>Select Property For</Text>
+            </View>
+            <View
+              style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
+            >
+              {/* <Text>Select Property For</Text> */}
+              <ButtonGroup
+                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                onPress={selectPropertyForIndex}
+                selectedIndex={propertyForIndex}
+                buttons={propertyForArray}
+                // containerStyle={{ height: 30 }}
+                textStyle={{ textAlign: "center" }}
+                selectedTextStyle={{ color: "#fff" }}
+                containerStyle={{
+                  borderRadius: 10,
+                  width: 300
+                  // borderColor: "red"
+                }}
+                containerBorderRadius={10}
+              />
+            </View>
+
+            <View style={[styles.header, { marginTop: 30 }]}>
+              <Text>Owner Details</Text>
+            </View>
+            <View style={styles.propSection}>
+              <TextInput
+                label="Name*"
+                value={ownerName}
+                // returnKeyType={"done"}
+                onChangeText={text => setOwnerName(text)}
+                onFocus={() => setIsVisible(false)}
+                style={{ backgroundColor: "rgba(245,245,245, 0.1)" }}
+                theme={{
+                  colors: {
+                    // placeholder: "white",
+                    // text: "white",
+                    primary: "rgba(0,191,255, .9)",
+                    underlineColor: "transparent",
+                    background: "#ffffff"
+                  }
+                }}
+              />
+              <TextInput
+                label="Mobile*"
+                value={ownerMobile}
+                onChangeText={text => setOwnerMobile(text)}
+                onFocus={() => setIsVisible(false)}
+                keyboardType={"numeric"}
+                returnKeyType={"done"}
+                style={{
+                  backgroundColor: "rgba(245,245,245, 0.1)",
+                  marginTop: 8
+                }}
+                theme={{
+                  colors: {
+                    // placeholder: "white",
+                    // text: "white",
+                    primary: "rgba(0,191,255, .9)",
+                    underlineColor: "transparent",
+                    background: "#ffffff"
+                  }
+                }}
+              />
+              <TextInput
+                label="Address*"
+                value={ownerAddress}
+                // returnKeyType={"done"}
+                onChangeText={text => setOwnerAddress(text)}
+                onFocus={() => setIsVisible(false)}
+                style={{
+                  backgroundColor: "rgba(245,245,245, 0.1)",
+                  marginTop: 8
+                }}
+                theme={{
+                  colors: {
+                    // placeholder: "white",
+                    // text: "white",
+                    primary: "rgba(0,191,255, .9)",
+                    underlineColor: "transparent",
+                    background: "#ffffff"
+                  }
+                }}
+              />
+              {/* <TextInput
+            mode="outlined"
+            style={styles.inputContainerStyle}
+            label="Address"
+            placeholder="Address"
+            value={locality}
+            keyboardType={"numeric"}
+            returnKeyType={"done"}
+            onChangeText={locality => setLocality(locality)}
+          /> */}
+            </View>
+            <View style={{ marginTop: 20 }}>
+              <Button title="NEXT" onPress={() => onSubmit()} />
+            </View>
+          </ScrollView>
+        </KeyboardAwareScrollView>
+        {/* <Snackbar
+        visible={isVisible}
+        textMessage={errorMessage}
+        position={"top"}
+        actionHandler={() => dismissSnackBar()}
+        actionText="OK"
+      /> */}
+      </SafeAreaView>
+    </Container>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 30,
+    marginLeft: 20,
+    marginRight: 20
+    // backgroundColor: "rgba(245,245,245, 0.8)"
+  },
+  header: {
+    alignContent: "flex-start"
+  },
+  propSection: {
+    marginTop: 20
+  },
+  propSubSection: {
+    // marginTop: 50,
+    marginBottom: 10,
+    marginLeft: 10
+  },
+  inputContainerStyle: {
+    margin: 8,
+    backgroundColor: "#ffffff"
+    // borderColor: "black",
+    // borderWidth: 1
+  }
+  // propSubSection: {
+  //   marginTop: 5,
+  //   marginBottom: 5
+  // },
+});
+
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddNewProperty);
+// export default AddNewProperty;
