@@ -36,17 +36,17 @@ const PropDetailsFromListing = props => {
 
 
   useEffect(() => {
-    getPropertyDetailsById();
+    getPropertyDetailsByIdToShare();
   }, [agentId, propId, propType]);
 
-  const getPropertyDetailsById = () => {
+  const getPropertyDetailsByIdToShare = () => {
     const user = {
       agent_id: agentId,
       property_id: propId,
       property_type: propType
     };
     console.log(JSON.stringify(user));
-    axios(SERVER_URL + "/getPropertyDetailsById", {
+    axios(SERVER_URL + "/getPropertyDetailsByIdToShare", {
       method: "POST",
       // headers: {
       //   "Content-type": "Application/json",
