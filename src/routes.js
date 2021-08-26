@@ -45,3 +45,6 @@ export default routes;
 
 
 // http://192.168.0.101:7006/customer/commercial/buy/15476a82-997a-4bef-bf1b-b1236f6c177e/a7fcb6d2-e976-4660-a1ba-4fbe692e1d16
+
+
+// /prop/residential/rent/7KeyZinEX5fPoShYYsSyn/Rqr_p1MY9WsMAhRpM8aUe/residential

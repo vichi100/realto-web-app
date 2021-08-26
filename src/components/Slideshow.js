@@ -13,6 +13,7 @@ import {
   Dimensions
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { SERVER_URL } from "../util/constant";
 // import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // https://github.com/kamalpandey/react-native-image-slider-show
@@ -201,7 +202,7 @@ export default class Slideshow extends Component {
         >
           {this.props.dataSource.map((image, index) => {
             const imageObject =
-              typeof image.url === "string" ? { uri: image.url } : image.url;
+              typeof image.url === "string" ? { uri: SERVER_URL + image.url } : SERVER_URL + image.url;
             const textComponent = (
               <View style={styles.layoutText}>
                 {image.title === undefined ? null : (

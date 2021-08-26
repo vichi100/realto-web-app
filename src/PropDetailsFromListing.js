@@ -32,7 +32,7 @@ import { SERVER_URL } from "./util/constant";
 const PropDetailsFromListing = props => {
   const { agentId, propId, propType } = props;
   const [item, setItem] = useState(null)
-  // console.log("item:  ", props.agentId);
+  console.log("item:  ", props.agentId);
 
 
   useEffect(() => {
@@ -90,11 +90,7 @@ const PropDetailsFromListing = props => {
       style={{ width: "100%", height: 200 }}
     /> */}
         <Slideshow
-          dataSource={[
-            { url: "http://placeimg.com/640/480/any" },
-            { url: "http://placeimg.com/640/480/any" },
-            { url: "http://placeimg.com/640/480/any" }
-          ]}
+          dataSource={item.image_urls}
         />
         <View style={[styles.detailsContainer]}>
           <View style={[styles.details]}>
