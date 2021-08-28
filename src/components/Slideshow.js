@@ -218,7 +218,7 @@ export default class Slideshow extends Component {
                 <Image
                   source={imageObject}
                   style={{ height, width }}
-                  resizeMode="cover"
+                  resizeMode="contain"
                 />
                 {textComponent}
               </View>
@@ -228,7 +228,7 @@ export default class Slideshow extends Component {
                 <View style={styles.overlay}>
                   <Image
                     source={imageObject}
-                    style={{ height, width }}
+                    // style={{ height, width }}
                     resizeMode="cover"
                   />
                 </View>

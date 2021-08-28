@@ -48,3 +48,6 @@ export default routes;
 
 
 // /prop/residential/rent/7KeyZinEX5fPoShYYsSyn/Rqr_p1MY9WsMAhRpM8aUe/residential
+
+
+///prop/residential/rent/7KeyZinEX5fPoShYYsSyn/aSUqGiJmK7bcICS_doxk9/residential
