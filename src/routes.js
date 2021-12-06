@@ -6,6 +6,7 @@ import PropDetailsFromListingForSell from "./PropDetailsFromListingForSell";
 import CommercialRentPropDetails from "./CommercialRentPropDetails";
 import CommercialSellPropDetails from "./CommercialSellPropDetails";
 import CustomerDetailsCommercialBuyFromList from "./CustomerDetailsCommercialBuyFromList";
+import Privacy from "./Privacy"
 
 import AddNewProperty from "./AddNewProperty";
 import LocalityDetailsForm from "./LocalityDetailsForm";
@@ -30,7 +31,7 @@ const routes = {
 
 	'/add': () => <AddNewProperty />,
 	'/location': () => <LocalityDetailsForm />,
-	// '/privacy': () => <Privacy />
+	'/privacy': () => <Privacy />
 };
 
 export default routes;
